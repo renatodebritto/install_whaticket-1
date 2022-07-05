@@ -1,11 +1,9 @@
 #!/bin/bash
 
-get_link_git() 
-
 get_instancia_add() {
   
   print_banner
-  printf "${WHITE} 💻 Digite o nome da instancia a ser configurada (Utilizar Letras minusculas):${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Digite o nome da instancia a ser instalada (Utilizar Letras minusculas):${GRAY_LIGHT}"
   printf "\n\n"
   read -p "> " instancia_add
 }
@@ -43,7 +41,6 @@ get_backend_port() {
 }
 
 get_urls() {
-  get_link_git
   get_instancia_add
   get_frontend_url
   get_backend_url
@@ -52,7 +49,7 @@ get_urls() {
 }
 
 software_update() {
-  get_instancia_add
+  
   frontend_update
   backend_update
 }
@@ -60,10 +57,10 @@ software_update() {
 inquiry_options() {
   
   print_banner
-  printf "${WHITE} 💻 Bem vindo(a) ao instalador Owen Zap, Selecione abaixo a proxima ação!${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Escolha uma das opções!${GRAY_LIGHT}"
   printf "\n\n"
-  printf "   [1] Instalar o OwenZap\n"
-  printf "   [2] Atualizar o OwenZap\n"
+  printf "   [1] Instalar o Sistema\n"
+  printf "   [2] Atualizar o Sistema\n"
   printf "\n"
   read -p "> " option
 
@@ -78,4 +75,3 @@ inquiry_options() {
     *) exit ;;
   esac
 }
-
