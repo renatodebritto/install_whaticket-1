@@ -8,6 +8,14 @@ get_mysql_root_password() {
   read -p "> " mysql_root_password
 }
 
+get_link_git() {
+  
+  print_banner
+  printf "${WHITE} 💻 Insira o link do GITHUB do sistema:${GRAY_LIGHT}"
+  printf "\n\n"
+  read -p "> " link_git
+}
+
 get_instancia_add() {
   
   print_banner
@@ -76,6 +84,7 @@ get_redis_port() {
 
 get_urls() {
   get_mysql_root_password
+  get_link_git
   get_instancia_add
   get_max_whats
   get_max_user
@@ -97,8 +106,8 @@ inquiry_options() {
   print_banner
   printf "${WHITE} 💻 Bem vindo(a) ao instalador Owen Zap, Selecione abaixo a proxima ação!${GRAY_LIGHT}"
   printf "\n\n"
-  printf "   [1] Instalar o Owen zap\n"
-  printf "   [2] Atualizar o Owen zap\n"
+  printf "   [1] Instalar o OwenZap\n"
+  printf "   [2] Atualizar o OwenZap\n"
   printf "\n"
   read -p "> " option
 
@@ -113,5 +122,4 @@ inquiry_options() {
     *) exit ;;
   esac
 }
-
 
