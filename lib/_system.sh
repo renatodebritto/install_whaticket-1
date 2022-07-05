@@ -36,11 +36,8 @@ system_git_clone() {
   sleep 2
 
   sudo su - Sistemas <<EOF
-   # git clone https://github.com/canove/whaticket  /home/Sistemas/${instancia_add}/
-     git clone https://github.com/whaticket/whaticket-community   /home/Sistemas/${instancia_add}/
-   # git clone https://github.com/rtenorioh/Press-Ticket  /home/Sistemas/${instancia_add}/
-   # git clone https://github.com/jerbison/Whaticket-owz   /home/Sistemas/${instancia_add}/
-EOF
+       git clone https://github.com/jjluizgomes/whaticket  /home/Sistemas/${instancia_add}/
+   EOF
 
   sleep 2
 }
