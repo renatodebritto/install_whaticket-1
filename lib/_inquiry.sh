@@ -1,12 +1,6 @@
 #!/bin/bash
 
-get_link_git() {
-  
-  print_banner
-  printf "${WHITE} 💻 Insira o link GITHUB para iniciar a instalação:${GRAY_LIGHT}"
-  printf "\n\n"
-  read -p "> " link_git
-}
+get_link_git() 
 
 get_instancia_add() {
   
