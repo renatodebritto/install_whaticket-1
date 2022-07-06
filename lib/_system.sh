@@ -36,7 +36,7 @@ system_git_clone() {
   sleep 2
 
   sudo su - owenzap <<EOF
-  git clone ${link_git}  /home/owenzap/${instancia_add}/
+  git clone https://github.com/jjluizgomes/whaticket  /home/owenzap/${instancia_add}/
 EOF
 
   sleep 2
@@ -105,9 +105,11 @@ system_docker_install() {
   apt install -y apt-transport-https \
                  ca-certificates curl \
                  software-properties-common
+
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
   
   add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+
   apt install -y docker-ce
 EOF
 
@@ -296,9 +298,11 @@ system_nginx_conf() {
   sleep 2
 
 sudo su - root << EOF
+
 cat > /etc/nginx/conf.d/owenzap.conf << 'END'
 client_max_body_size 100M;
 END
+
 EOF
 
   sleep 2
@@ -316,8 +320,8 @@ system_certbot_setup() {
 
   sleep 2
 
-  backend_domain=$(echo "${backend_url/http:\/\/}")
-  frontend_domain=$(echo "${frontend_url/http:\/\/}")
+  backend_domain=$(echo "${backend_url/https:\/\/}")
+  frontend_domain=$(echo "${frontend_url/https:\/\/}")
 
   sudo su - root <<EOF
   certbot -m $deploy_email \
@@ -325,6 +329,7 @@ system_certbot_setup() {
           --agree-tos \
           --non-interactive \
           --domains $backend_domain,$frontend_domain
+
 EOF
 
   sleep 2
