@@ -15,8 +15,8 @@ system_create_user() {
   sleep 2
 
   sudo su - root <<EOF
-  useradd -m -p $(openssl passwd -crypt $Sistemas_password) -s /bin/bash -G sudo Sistemas
-  usermod -aG sudo Sistemas
+  useradd -m -p $(openssl passwd -crypt ${mysql_root_password}) -s /bin/bash -G sudo owenzap
+  usermod -aG sudo owenzap
 EOF
 
   sleep 2
@@ -29,15 +29,15 @@ EOF
 #######################################
 system_git_clone() {
   print_banner
-  printf "${WHITE} 💻 Fazendo download do Repositório...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Fazendo download do código Owen Zap...${GRAY_LIGHT}"
   printf "\n\n"
 
 
   sleep 2
 
-  sudo su - Sistemas <<EOF
-       git clone https://github.com/jjluizgomes/whaticket  /home/Sistemas/${instancia_add}/
-   EOF
+  sudo su - owenzap <<EOF
+  git clone ${link_git}  /home/owenzap/${instancia_add}/
+EOF
 
   sleep 2
 }
@@ -49,7 +49,7 @@ system_git_clone() {
 #######################################
 system_update() {
   print_banner
-  printf "${WHITE} 💻 Vamos atualizar o sistema ...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Vamos atualizar o sistema Owen Zap...${GRAY_LIGHT}"
   printf "\n\n"
 
   sleep 2
@@ -74,13 +74,21 @@ system_node_install() {
   sleep 2
 
   sudo su - root <<EOF
-  curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+  curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
   apt-get install -y nodejs
+  sleep 2
+  npm install -g npm@latest
+  sleep 2
+  sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+  sudo apt-get update -y && sudo apt-get -y install postgresql
+  sleep 2
+  sudo timedatectl set-timezone America/Sao_Paulo
+  
 EOF
 
   sleep 2
 }
-
 #######################################
 # installs docker
 # Arguments:
@@ -88,18 +96,19 @@ EOF
 #######################################
 system_docker_install() {
   print_banner
-  printf "${WHITE} 💻 Instalando Mysql...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Instalando docker...${GRAY_LIGHT}"
   printf "\n\n"
 
   sleep 2
 
   sudo su - root <<EOF
-  sudo apt update
-  sudo apt install mysql-server -y
-  sudo mysql
-  ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '${mysql_root_password}';
-  FLUSH PRIVILEGES;
-  exit
+  apt install -y apt-transport-https \
+                 ca-certificates curl \
+                 software-properties-common
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  
+  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+  apt install -y docker-ce
 EOF
 
   sleep 2
@@ -186,8 +195,8 @@ system_pm2_install() {
 
   sudo su - root <<EOF
   npm install -g pm2
-  pm2 startup ubuntu -u Sistemas
-  env PATH=\$PATH:/usr/bin pm2 startup ubuntu -u Sistemas --hp /home/Sistemas/${instancia_add}
+  pm2 startup ubuntu -u owenzap
+  env PATH=\$PATH:/usr/bin pm2 startup ubuntu -u owenzap --hp /home/owenzap/${instancia_add}
 EOF
 
   sleep 2
@@ -286,15 +295,13 @@ system_nginx_conf() {
 
   sleep 2
 
-#sudo su - root << EOF
+sudo su - root << EOF
+cat > /etc/nginx/conf.d/owenzap.conf << 'END'
+client_max_body_size 100M;
+END
+EOF
 
-#cat > /etc/nginx/conf.d/system.conf << 'END'
-#client_max_body_size 20M;
-#END
-
-#EOF
-
-  #sleep 2
+  sleep 2
 }
 
 #######################################
@@ -309,11 +316,11 @@ system_certbot_setup() {
 
   sleep 2
 
-  backend_domain=$(echo "${backend_url/https:\/\/}")
-  frontend_domain=$(echo "${frontend_url/https:\/\/}")
+  backend_domain=$(echo "${backend_url/http:\/\/}")
+  frontend_domain=$(echo "${frontend_url/http:\/\/}")
 
   sudo su - root <<EOF
-  certbot -m $Sistemas_email \
+  certbot -m $deploy_email \
           --nginx \
           --agree-tos \
           --non-interactive \
