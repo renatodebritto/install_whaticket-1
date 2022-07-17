@@ -36,7 +36,7 @@ system_git_clone() {
   sleep 2
 
   sudo su - owenzap <<EOF
-  git clone https://github.com/Anderson-Nascimento-Mendonca/MetaTicket  /home/owenzap/${instancia_add}/
+  git clone https://github.com/prerio/whatsapp  /home/owenzap/${instancia_add}/
 EOF
 
   sleep 2
