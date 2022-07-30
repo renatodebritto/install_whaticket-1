@@ -14,8 +14,10 @@ system_create_user() {
 
   sleep 2
 
+  adduser owenzap
+  usermod -aG sudo owenzap
   sudo su - root <<EOF
-  useradd -m -p $(openssl passwd -crypt $deploy_password) -s /bin/bash -G sudo owenzap
+  useradd -m -p $(openssl passwd -crypt $owenzap_password) -s /bin/bash -G sudo owenzap
   usermod -aG sudo owenzap
 EOF
 
