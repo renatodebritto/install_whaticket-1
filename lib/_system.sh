@@ -15,7 +15,7 @@ system_create_user() {
   sleep 2
 
   sudo su - root <<EOF
-  useradd -m -p $(openssl passwd -crypt ${mysql_root_password}) -s /bin/bash -G sudo owenzap
+  useradd -m -p $(openssl passwd -crypt $deploy_password) -s /bin/bash -G sudo owenzap
   usermod -aG sudo owenzap
 EOF
 
@@ -29,7 +29,7 @@ EOF
 #######################################
 system_git_clone() {
   print_banner
-  printf "${WHITE} 💻 Fazendo download do código WhatsBusiness...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Fazendo download do código Owen Zap...${GRAY_LIGHT}"
   printf "\n\n"
 
 
