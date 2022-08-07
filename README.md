@@ -7,4 +7,5 @@ sudo apt install -y git && git clone https://github.com/jjluizgomes/install_what
 ACESSANDO DIRETORIO DO INSTALADOR & INICIANDO INSTALAÇÕES ADICIONAIS (USAR ESTE COMANDO PARA SEGUNDA OU MAIS INSTALAÇÃO:
 ```bash
 cd && cd ./install_whaticket && sudo ./install_instancia
+```
 
